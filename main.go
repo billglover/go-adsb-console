@@ -199,6 +199,12 @@ func updateAircraft(r io.Reader, store *Store) error {
 	}
 
 	for _, a1 := range scan.Aircraft {
+
+		// skip aircraft where we don't have a flight identifier
+		if a1.Flight == "" {
+			continue
+		}
+
 		a2, ok := store.aircraft[a1.Flight]
 		if ok && !hasMoved(a1, a2) {
 			continue
