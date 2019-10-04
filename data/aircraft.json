@@ -1,7 +1,7 @@
 { "now" : 1570083881.2,
   "messages" : 32580317,
   "aircraft" : [
-    {"hex":"a4cf26","squawk":"2355","flight":"GTI5219 ","lat":51.137559,"lon":-1.164031,"nucp":7,"seen_pos":0.7,"altitude":35000,"vert_rate":0,"track":59,"speed":514,"category":"A5","mlat":[],"tisb":[],"messages":236,"seen":0.2,"rssi":-21.1},
+    {"hex":"a4cf26","squawk":"2355","flight":"GTI5219 ","lat":51.137558,"lon":-1.164031,"nucp":7,"seen_pos":0.7,"altitude":35000,"vert_rate":0,"track":59,"speed":514,"category":"A5","mlat":[],"tisb":[],"messages":236,"seen":0.2,"rssi":-21.1},
     {"hex":"4b1a23","squawk":"5744","flight":"EZS42AX ","lat":50.989085,"lon":0.172501,"nucp":7,"seen_pos":3.5,"altitude":8175,"vert_rate":-704,"track":309,"speed":271,"category":"A3","mlat":[],"tisb":[],"messages":159,"seen":0.2,"rssi":-24.9},
     {"hex":"40083b","altitude":10875,"mlat":[],"tisb":[],"messages":3,"seen":19.4,"rssi":-29.1},
     {"hex":"40087a","lat":51.656365,"lon":0.249023,"nucp":7,"seen_pos":16.3,"altitude":8775,"vert_rate":-1408,"track":261,"speed":257,"mlat":[],"tisb":[],"messages":36,"seen":0.7,"rssi":-23.8},
