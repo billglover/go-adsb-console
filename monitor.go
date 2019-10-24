@@ -20,15 +20,11 @@ func startMonitor(ctx context.Context, path string, dur, maxAge time.Duration, s
 		return errors.New("no data store provided")
 	}
 
-	info, err := os.Stat(path)
-	if err != nil {
-		return fmt.Errorf("unable to stat file: %w", err)
-	}
-	lastModified := info.ModTime()
-
 	ticker := time.NewTicker(dur).C
 
 	go func() {
+		lastModified := time.Now()
+
 		for {
 			select {
 			case <-ticker:
