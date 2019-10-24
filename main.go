@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"sync"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -90,7 +91,15 @@ func main() {
 	}
 
 	// Start sending updates to RabbitMQ
-	err = startUpdater(ctx, amqpURL, amqpExchange, updateDuration, stationName, &store)
+	for n := 1; n <= 10; n++ {
+		err = startUpdater(ctx, amqpURL, amqpExchange, updateDuration, stationName, &store)
+		if err != nil {
+			log.Printf("failed to start updater: attempt %d/%d: %s\n", n, 10, err)
+			time.Sleep(time.Second * time.Duration(n))
+			continue
+		}
+		break
+	}
 	if err != nil {
 		log.Fatalln("failed to start updater:", err)
 	}

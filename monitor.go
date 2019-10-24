@@ -31,6 +31,7 @@ func startMonitor(ctx context.Context, path string, dur, maxAge time.Duration, s
 				info, err := os.Stat(path)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "failed to stat file: %v\n", err)
+					continue
 				}
 
 				if info.ModTime().After(lastModified) {
