@@ -25,6 +25,8 @@ nfpms:
   description: Agent to send ADSB updates to RabbitMQ exchange.
   files:
     "scripts/etc/systemd/system/": "/etc/systemd/system"
+  config:
+    "config_sample.yaml": "/etc/go-adsb-console/config.yaml"
   formats:
   - deb
   - rpm

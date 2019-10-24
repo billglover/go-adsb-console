@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"flag"
 	"log"
 	"os"
 	"os/signal"
 	"sync"
-	"time"
+
+	"github.com/spf13/viper"
 )
 
 var (
@@ -16,22 +16,48 @@ var (
 )
 
 func main() {
-	var monitorDuration time.Duration = time.Second * 1
-	var updateDuration time.Duration = time.Second * 5
-	var aircraftJSON string = "/run/dump1090-mutability/aircraft.json"
-	var maxAircraftAge time.Duration = time.Second * 60
-	var amqpURL string
-	var amqpExchange string = "adsb-fan-exchange"
-	var stationName string
+	viper.SetConfigName("config")
+	viper.AddConfigPath("/etc/go-adsb-console/")
+	viper.AddConfigPath(".")
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 
-	flag.StringVar(&aircraftJSON, "aircraft", LookupEnvOrString("ADSB_AIRCRAFT_JSON", aircraftJSON), "location of the aircraft.json file to monitor")
-	flag.DurationVar(&maxAircraftAge, "max-aircraft-age", LookupEnvOrDur("ADSB_MAX_AIRCRAFT_AGE", maxAircraftAge), "maximum age for an aircraft before it is removed from memory")
-	flag.DurationVar(&monitorDuration, "monitor-every", LookupEnvOrDur("ADSB_MONITOR_EVERY", monitorDuration), "duration between polling for aircraft movement")
-	flag.DurationVar(&updateDuration, "update-every", LookupEnvOrDur("ADSB_UPDATE_EVERY", updateDuration), "duration between sending an updated aircraft scan")
-	flag.StringVar(&amqpURL, "amqp-url", LookupEnvOrString("ADSB_RABBITMQ_URL", amqpURL), "connection string for RabbitMQ")
-	flag.StringVar(&amqpExchange, "amqp-exchange", LookupEnvOrString("ADSB_RABBITMQ_EXCHANGE", amqpExchange), "exchange name for RabbitMQ")
-	flag.StringVar(&stationName, "station-name", LookupEnvOrString("ADSB_BASE_STATION_NAME", stationName), "friendly name for the base station (note: publicly visible)")
-	flag.Parse()
+	if viper.IsSet("aircraftJSON") == false {
+		log.Fatalln("Configuration file doesn't include a value for aircraftJSON.")
+	}
+	aircraftJSON := viper.GetString("aircraftJSON")
+
+	if viper.IsSet("monitorDuration") == false {
+		log.Fatalln("Configuration file doesn't include a value for monitorDuration.")
+	}
+	monitorDuration := viper.GetDuration("monitorDuration")
+
+	if viper.IsSet("updateDuration") == false {
+		log.Fatalln("Configuration file doesn't include a value for updateDuration.")
+	}
+	updateDuration := viper.GetDuration("updateDuration")
+
+	if viper.IsSet("maxAircraftAge") == false {
+		log.Fatalln("Configuration file doesn't include a value for maxAircraftAge.")
+	}
+	maxAircraftAge := viper.GetDuration("maxAircraftAge")
+
+	if viper.IsSet("amqpURL") == false {
+		log.Fatalln("Configuration file doesn't include a value for amqpURL.")
+	}
+	amqpURL := viper.GetString("amqpURL")
+
+	if viper.IsSet("amqpExchange") == false {
+		log.Fatalln("Configuration file doesn't include a value for amqpExchange.")
+	}
+	amqpExchange := viper.GetString("amqpExchange")
+
+	if viper.IsSet("stationName") == false {
+		log.Fatalln("Configuration file doesn't include a value for stationName.")
+	}
+	stationName := viper.GetString("stationName")
 
 	// Handle OS signals gracefully
 	ctx := context.Background()
@@ -58,7 +84,7 @@ func main() {
 	}
 
 	// Start monitoring for aircraft positions
-	err := startMonitor(ctx, aircraftJSON, monitorDuration, maxAircraftAge, &store, stationName)
+	err = startMonitor(ctx, aircraftJSON, monitorDuration, maxAircraftAge, &store, stationName)
 	if err != nil {
 		log.Fatalln("failed to start monitor:", err)
 	}
@@ -75,29 +101,4 @@ func main() {
 			return
 		}
 	}
-}
-
-// LookupEnvOrString returns the value of the provided environment variable if
-// set. If the environment variable is not set, then the initial string value
-// is returned instead.
-func LookupEnvOrString(key string, initial string) string {
-	if val, ok := os.LookupEnv(key); ok {
-		return val
-	}
-	return initial
-}
-
-// LookupEnvOrDur returns the value of the provided environment variable if
-// set. If the environment variable is not set or results in an error during
-// parsing, then the initial duration is returned instead.
-func LookupEnvOrDur(key string, initial time.Duration) time.Duration {
-	if val, ok := os.LookupEnv(key); ok {
-		dur, err := time.ParseDuration(val)
-		if err != nil {
-			return initial
-		}
-
-		return dur
-	}
-	return initial
 }
