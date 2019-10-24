@@ -1,0 +1,11 @@
+---
+nfpms:
+- id: default
+  name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+  vendor: Bill Glover
+  homepage: https://github.com/billglover/go-adsb-console
+  maintainer: Bill Glover <bglover@pivotal.io>
+  description: Agent to send ADSB updates to RabbitMQ exchange.
+  formats:
+      - deb
+      - rpm
