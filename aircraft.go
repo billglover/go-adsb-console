@@ -37,11 +37,16 @@ type Scan struct {
 	Aircraft []Aircraft `json:"aircraft"` // a slice of Aircraft, one entry for each known aircraft
 }
 
+// AircraftPos is a record that maintains the last known position of an aircraft
+type AircraftPos struct {
+	modified bool
+	aircraft Aircraft
+}
+
 // Store is an in memory map of aircraft
 type Store struct {
-	modified bool
 	lock     *sync.Mutex
-	aircraft map[string]Aircraft
+	aircraft map[string]AircraftPos
 }
 
 // HasMoved takes two Aircraft positions and returns a boolean to indicate
@@ -79,16 +84,18 @@ func updateAircraft(s Scan, store *Store, station string) {
 		s.Aircraft[i].Flight = strings.TrimSpace(s.Aircraft[i].Flight)
 		s.Aircraft[i].Type = "AIRCRAFT"
 		s.Aircraft[i].StationName = station
+		if s.Aircraft[i].Timestamp == 0 {
+			s.Aircraft[i].Timestamp = time.Now().Unix()
+		}
 
 		a2, ok := store.aircraft[s.Aircraft[i].Flight]
-		moved, _ := HasMoved(s.Aircraft[i], a2)
+		moved, _ := HasMoved(s.Aircraft[i], a2.aircraft)
 		if ok && !moved {
 			continue
 		}
 
 		store.lock.Lock()
-		store.aircraft[s.Aircraft[i].Flight] = s.Aircraft[i]
-		store.modified = true
+		store.aircraft[s.Aircraft[i].Flight] = AircraftPos{aircraft: s.Aircraft[i], modified: true}
 		store.lock.Unlock()
 	}
 }
@@ -109,7 +116,7 @@ func purgeAircraft(s Scan, store *Store, maxAge time.Duration) {
 			continue
 		}
 
-		lastSeen := time.Second * time.Duration(v.Seen)
+		lastSeen := time.Second * time.Duration(v.aircraft.Seen)
 		if lastSeen > maxAge {
 			delete(store.aircraft, k)
 		}

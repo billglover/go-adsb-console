@@ -15,7 +15,7 @@ func TestStartMonitor(t *testing.T) {
 	dur := time.Second * 1
 	maxAge := time.Second * 60
 
-	store := Store{aircraft: make(map[string]Aircraft), lock: new(sync.Mutex)}
+	store := Store{aircraft: make(map[string]AircraftPos), lock: new(sync.Mutex)}
 
 	t.Run("success", func(t *testing.T) {
 		err := startMonitor(ctx, path, dur, maxAge, &store, "dummy station")
