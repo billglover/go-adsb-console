@@ -90,17 +90,17 @@ func TestHasMoved(t *testing.T) {
 }
 
 func TestUpdateAircraft(t *testing.T) {
-	store := Store{aircraft: make(map[string]Aircraft), lock: new(sync.Mutex)}
+	store := Store{aircraft: make(map[string]AircraftPos), lock: new(sync.Mutex)}
 
 	var station = "dummy station"
-	a1 := Aircraft{Flight: "A", Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station}
-	a2 := Aircraft{Flight: "B", Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station}
-	a3 := Aircraft{Flight: "C", Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station}
-	a4 := Aircraft{Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 60, Type: "AIRCRAFT", StationName: station}
+	a1 := Aircraft{Flight: "A", Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
+	a2 := Aircraft{Flight: "B", Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
+	a3 := Aircraft{Flight: "C", Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
+	a4 := Aircraft{Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 60, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
 
 	// Data Store starts off with two known aircraft.
-	store.aircraft[a1.Flight] = a1
-	store.aircraft[a2.Flight] = a2
+	store.aircraft[a1.Flight] = AircraftPos{aircraft: a1}
+	store.aircraft[a2.Flight] = AircraftPos{aircraft: a2}
 
 	// One aircraft moves position
 	a1.Lat = -1
@@ -111,12 +111,12 @@ func TestUpdateAircraft(t *testing.T) {
 	updateAircraft(scan, &store, station)
 
 	// We expect the position of the known aircraft that moved to be updated.
-	if store.aircraft[a1.Flight] != a1 {
+	if store.aircraft[a1.Flight].aircraft != a1 {
 		t.Errorf("%v != %v", store.aircraft[a1.Flight], a1)
 	}
 
 	// We expect the position of the aircraft that didn't move to remain unchanged
-	if store.aircraft[a1.Flight] != a1 {
+	if store.aircraft[a1.Flight].aircraft != a1 {
 		t.Errorf("%v != %v", store.aircraft[a2.Flight], a2)
 	}
 
@@ -130,13 +130,13 @@ func TestUpdateAircraft(t *testing.T) {
 
 func TestPurgeAircraft(t *testing.T) {
 	maxAge := time.Second * 60
-	store := Store{aircraft: make(map[string]Aircraft), lock: new(sync.Mutex)}
+	store := Store{aircraft: make(map[string]AircraftPos), lock: new(sync.Mutex)}
 
 	// Data store contains two aircraft, one old, one new.
 	a1 := Aircraft{Flight: "A", Seen: 10}
 	a2 := Aircraft{Flight: "B", Seen: 90}
-	store.aircraft["A"] = a1
-	store.aircraft["B"] = a2
+	store.aircraft[a1.Flight] = AircraftPos{aircraft: a1}
+	store.aircraft[a2.Flight] = AircraftPos{aircraft: a2}
 
 	// Scan contains no aircraft.
 	scan := Scan{Aircraft: []Aircraft{a1, a2}}

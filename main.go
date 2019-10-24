@@ -53,8 +53,7 @@ func main() {
 
 	// Create an in-memory store to hold the latest aircraft positions
 	var store = Store{
-		modified: false,
-		aircraft: make(map[string]Aircraft),
+		aircraft: make(map[string]AircraftPos),
 		lock:     new(sync.Mutex),
 	}
 
