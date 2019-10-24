@@ -76,7 +76,7 @@ func updateAircraft(s Scan, store *Store, station string) {
 	// update aircraft positions in the data Store
 	for i := range s.Aircraft {
 
-		if s.Aircraft[i].Flight == "" {
+		if s.Aircraft[i].Flight == "" || s.Aircraft[i].Lon == 0 || s.Aircraft[i].Lat == 0 {
 			continue
 		}
 

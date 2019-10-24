@@ -33,8 +33,8 @@ func TestStartMonitor(t *testing.T) {
 
 	t.Run("invalid file", func(t *testing.T) {
 		err := startMonitor(ctx, "data/invalid.no.file", dur, maxAge, &store, "dummy station")
-		if err == nil {
-			t.Error("expected an error, got none")
+		if err != nil {
+			t.Error(err)
 		}
 	})
 
