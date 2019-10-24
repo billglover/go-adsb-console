@@ -1,0 +1,9 @@
+[Unit]
+Description=Go ADSB Console
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/go-adsb-console
+
+[Install]
+WantedBy=multi-user.target
