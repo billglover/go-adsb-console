@@ -22,6 +22,22 @@ func startUpdater(ctx context.Context, conStr, exchange string, dur time.Duratio
 		return fmt.Errorf("failed to open a channel: %w", err)
 	}
 
+	closures := conn.NotifyClose(make(chan *amqp.Error))
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-closures:
+				var err error
+				rmqCh, err = conn.Channel()
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "failed to open a channel: %s", err)
+				}
+			}
+		}
+	}()
+
 	rmqCh.ExchangeDeclare(
 		exchange, // name
 		"fanout", // kind
