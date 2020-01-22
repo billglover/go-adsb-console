@@ -85,7 +85,7 @@ func updateAircraft(s Scan, store *Store, station string) {
 		s.Aircraft[i].Type = "AIRCRAFT"
 		s.Aircraft[i].StationName = station
 		if s.Aircraft[i].Timestamp == 0 {
-			s.Aircraft[i].Timestamp = time.Now().Unix()
+			s.Aircraft[i].Timestamp = time.Now().UnixNano() / 1000
 		}
 
 		a2, ok := store.aircraft[s.Aircraft[i].Flight]
