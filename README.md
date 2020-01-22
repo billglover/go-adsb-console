@@ -34,7 +34,7 @@ You will need to update the value of `amqpURL` with a device key from Adam. Give
 4. If you have modified the configuration file, you will need to restart the application.
 
 ```plain
-sudo servicectl restart go-adsb-console
+sudo systemctl restart go-adsb-console
 ```
 
 ## References
