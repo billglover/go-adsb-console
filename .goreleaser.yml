@@ -9,6 +9,8 @@ builds:
   goos:
   - linux
   - darwin
+  flags:
+  - -trimpath
 changelog:
   sort: asc
   filters:
