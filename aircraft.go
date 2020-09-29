@@ -13,7 +13,7 @@ type Aircraft struct {
 	Flight      string  `json:"flight"`              // the flight name / callsign
 	Lon         float64 `json:"lon"`                 // the aircraft longitude in decimal degrees
 	Lat         float64 `json:"lat"`                 // // the aircraft latitude in decimal degrees
-	Track       int     `json:"track"`               // true track over ground in degrees (0-359)
+	Track       float64 `json:"track"`               // true track over ground in degrees (0-359)
 	Speed       int     `json:"speed,omitempty"`     // reported speed in kt. This is usually speed over ground, but might be IAS - you can't tell the difference here, sorry!
 	Hex         string  `json:"hex"`                 // the 24-bit ICAO identifier of the aircraft, as 6 hex digits. The identifier may start with '~', this means that the address is a non-ICAO address (e.g. from TIS-B).
 	Squawk      string  `json:"squawk,omitempty"`    // the 4-digit squawk (octal representation)

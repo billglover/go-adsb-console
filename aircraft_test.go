@@ -19,8 +19,8 @@ func TestHasMoved(t *testing.T) {
 	}{
 		{
 			name:    "identical",
-			a1:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, Altitude: 3, Track: 4},
-			a2:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, Altitude: 3, Track: 4},
+			a1:      Aircraft{Flight: "a1", Lat: 1.1, Lon: 2.2, Altitude: 3, Track: 4.1},
+			a2:      Aircraft{Flight: "a1", Lat: 1.1, Lon: 2.2, Altitude: 3, Track: 4.1},
 			wantVal: false,
 			wantErr: nil,
 		},
