@@ -23,7 +23,7 @@ changelog:
 
 nfpms:
 - id: default
-  name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+  file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
   vendor: Bill Glover
   homepage: https://github.com/billglover/go-adsb-console
   maintainer: Bill Glover <bglover@pivotal.io>
