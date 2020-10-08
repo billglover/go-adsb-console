@@ -19,50 +19,50 @@ func TestHasMoved(t *testing.T) {
 	}{
 		{
 			name:    "identical",
-			a1:      Aircraft{Flight: "a1", Lat: 1.1, Lon: 2.2, Altitude: 3, Track: 4.1},
-			a2:      Aircraft{Flight: "a1", Lat: 1.1, Lon: 2.2, Altitude: 3, Track: 4.1},
+			a1:      Aircraft{Flight: "a1", Lat: 1.1, Lon: 2.2, AltGeom: 3, Track: 4.1},
+			a2:      Aircraft{Flight: "a1", Lat: 1.1, Lon: 2.2, AltGeom: 3, Track: 4.1},
 			wantVal: false,
 			wantErr: nil,
 		},
 		{
 			name:    "moved_lat",
-			a1:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, Altitude: 3, Track: 4},
-			a2:      Aircraft{Flight: "a1", Lat: 2, Lon: 2, Altitude: 3, Track: 4},
+			a1:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, AltGeom: 3, Track: 4},
+			a2:      Aircraft{Flight: "a1", Lat: 2, Lon: 2, AltGeom: 3, Track: 4},
 			wantVal: true,
 			wantErr: nil,
 		},
 		{
 			name:    "moved_lon",
-			a1:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, Altitude: 3, Track: 4},
-			a2:      Aircraft{Flight: "a1", Lat: 1, Lon: 3, Altitude: 3, Track: 4},
+			a1:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, AltGeom: 3, Track: 4},
+			a2:      Aircraft{Flight: "a1", Lat: 1, Lon: 3, AltGeom: 3, Track: 4},
 			wantVal: true,
 			wantErr: nil,
 		},
 		{
 			name:    "moved_alt",
-			a1:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, Altitude: 3, Track: 4},
-			a2:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, Altitude: 4, Track: 4},
+			a1:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, AltGeom: 3, Track: 4},
+			a2:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, AltGeom: 4, Track: 4},
 			wantVal: true,
 			wantErr: nil,
 		},
 		{
 			name:    "moved_track",
-			a1:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, Altitude: 3, Track: 4},
-			a2:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, Altitude: 3, Track: 5},
+			a1:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, AltGeom: 3, Track: 4},
+			a2:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, AltGeom: 3, Track: 5},
 			wantVal: true,
 			wantErr: nil,
 		},
 		{
 			name:    "different",
-			a1:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, Altitude: 3, Track: 4},
-			a2:      Aircraft{Flight: "a2", Lat: 1, Lon: 2, Altitude: 3, Track: 4},
+			a1:      Aircraft{Flight: "a1", Lat: 1, Lon: 2, AltGeom: 3, Track: 4},
+			a2:      Aircraft{Flight: "a2", Lat: 1, Lon: 2, AltGeom: 3, Track: 4},
 			wantVal: false,
 			wantErr: fmt.Errorf("a1 and a2 represent different aircraft"),
 		},
 		{
 			name:    "unknown",
-			a1:      Aircraft{Lat: 1, Lon: 2, Altitude: 3, Track: 4},
-			a2:      Aircraft{Lat: 1, Lon: 2, Altitude: 3, Track: 4},
+			a1:      Aircraft{Lat: 1, Lon: 2, AltGeom: 3, Track: 4},
+			a2:      Aircraft{Lat: 1, Lon: 2, AltGeom: 3, Track: 4},
 			wantVal: false,
 			wantErr: fmt.Errorf("a1 and/or a2 represents unknown aircraft"),
 		},
@@ -93,10 +93,10 @@ func TestUpdateAircraft(t *testing.T) {
 	store := Store{aircraft: make(map[string]AircraftPos), lock: new(sync.Mutex)}
 
 	var station = "dummy station"
-	a1 := Aircraft{Flight: "A", Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
-	a2 := Aircraft{Flight: "B", Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
-	a3 := Aircraft{Flight: "C", Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
-	a4 := Aircraft{Lat: 1, Lon: 2, Altitude: 3, Track: 4, Seen: 60, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
+	a1 := Aircraft{Flight: "A", Lat: 1, Lon: 2, AltGeom: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
+	a2 := Aircraft{Flight: "B", Lat: 1, Lon: 2, AltGeom: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
+	a3 := Aircraft{Flight: "C", Lat: 1, Lon: 2, AltGeom: 3, Track: 4, Seen: 90, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
+	a4 := Aircraft{Lat: 1, Lon: 2, AltGeom: 3, Track: 4, Seen: 60, Type: "AIRCRAFT", StationName: station, Timestamp: 1}
 
 	// Data Store starts off with two known aircraft.
 	store.aircraft[a1.Flight] = AircraftPos{aircraft: a1}
