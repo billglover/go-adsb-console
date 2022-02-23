@@ -7,13 +7,13 @@ These instructions assume you are running Raspbian and have `dump1090-mutability
 1. Dowload the Debian package
 
 ```plain
-wget https://github.com/billglover/go-adsb-console/releases/download/v0.5/go-adsb-console_0.5_linux_arm.deb
+wget https://github.com/billglover/go-adsb-console/releases/download/v0.10/go-adsb-console_0.510_linux_arm.deb
 ```
 
 2. Install the Debian package
 
 ```plain
-sudo dpkg -i go-adsb-console_0.5_linux_arm.deb
+sudo dpkg -i go-adsb-console_0.10_linux_arm.deb
 ```
 
 3. If this is your first installation, you will need to modify your configuration file: `/etc/go-adsb-console/config.yaml`
