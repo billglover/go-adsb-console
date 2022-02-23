@@ -2,12 +2,12 @@
 
 ## Installation
 
-These instructions assume you are running Raspbian and have `dump1090-mutability` installed.
+These instructions assume you are running Raspbian and have `dump1090-fa` installed.
 
 1. Dowload the Debian package
 
 ```plain
-wget https://github.com/billglover/go-adsb-console/releases/download/v0.10/go-adsb-console_0.510_linux_arm.deb
+wget https://github.com/billglover/go-adsb-console/releases/download/v0.10/go-adsb-console_0.10_linux_arm.deb
 ```
 
 2. Install the Debian package
@@ -20,7 +20,7 @@ sudo dpkg -i go-adsb-console_0.10_linux_arm.deb
 
 ```yaml
 ---
-aircraftJSON: /run/dump1090-mutability/aircraft.json
+aircraftJSON: /run/dump1090-fa/aircraft.json
 monitorDuration: 1s
 updateDuration: 5s
 maxAircraftAge: 60s
