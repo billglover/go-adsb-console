@@ -1,5 +1,7 @@
 # go-adsb-console
 
+This repository is no longer being actively maintained. Please see: https://github.com/adamfowleruk/spring-adsb/tree/develop/adsb-console-go for the latest version of the Go client for this demo.
+
 ## Installation
 
 These instructions assume you are running Raspbian and have `dump1090-fa` installed.
